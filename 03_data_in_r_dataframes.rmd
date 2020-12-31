@@ -1,0 +1,119 @@
+---
+title: "dataframes"
+author: "C. Durso"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Read in data
+
+General text files may be read in using *read.table* using appropriate arguments. CSV format, an "industry standard" typically uses *read.csv*
+
+```{r}
+dat<-read.csv("worms.csv")
+# Get just a few rows:
+dat.b<-read.csv("worms.csv",nrows=5)
+```
+
+## Inspecting the data
+
+You can view dataframes by double clicking in RStudio. There are some standard summary tools.
+
+```{r}
+dat
+dim(dat)
+names(dat)
+str(dat)
+summary(dat)
+head(dat)
+dat[2,4]
+```
+
+## Select columns
+
+Leaving the row index blank and providing column indices allows selection of a subset of the columns.
+
+```{r}
+dat[,3]
+dat$Vegetation
+dat[,2:4]
+
+```
+
+## Select rows
+
+Leaving the column index blank and providing a vector of indices or boolean values allows selection of a subset of the rows.
+
+```{r}
+dat[1:4,]
+damp<-dat[dat$Damp,]
+summary(damp)
+flat<-dat[dat$Slope<4.5,]
+summary(flat)
+```
+
+## Sorting
+
+The function *sort* applied to a vector returns the sorted vector.
+
+```{r}
+sort(dat[,2])
+dat[,2]
+```
+
+To sort a dataframe on a column, apply *order* to the column. It returns a vector of the index of each element of the column after a stable sort.
+
+```{r}
+ind<-order(dat$Area)
+dat$Area[ind]
+dat.ordered<-dat[ind,] # reorder rows
+dat.ordered$Area
+head(dat.ordered)
+ind<-order(dat.ordered$Slope)
+dat.ordered<-dat.ordered[ind,] # ordered by slope, and by area within slope
+head(dat.ordered)
+```
+
+Alternatively, the *arrange* function may be used.
+
+```{r}
+dat.ordered2<-arrange(dat,Slope,Area)
+head(dat.ordered2)
+```
+
+## Saving
+
+If you have built data that you would like to use elsewhere, you can save it:
+
+```{r}
+save(dat,file="worm_data.RData")
+rm(dat)
+ls() 
+load("worm_data.RData")
+ls()
+str(dat) # it's back
+```
+
+You can save plots by plotting from the Console then exporting.
+
+```{r}
+qplot(dat$Soil.pH,dat$Worm.density,main="Worm Density by pH", xlab = "pH",
+     ylab = "worm density")
+```
+
+or through code.
+
+```{r}
+png(file = "myplot.png", bg = "transparent")
+qplot(dat$Soil.pH,dat$Worm.density,main="Worm Density by pH", xlab = "pH",
+     ylab = "worm density")
+dev.off()
+
+```
+Check in Files tab. 

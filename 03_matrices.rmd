@@ -1,0 +1,55 @@
+---
+title: "Matrices"
+author: "cdurso"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Make a matrix
+
+```{r}
+set.seed(45678)
+(vals<-rnorm(5*3))
+(m<-matrix(vals,ncol=5))
+(m<-matrix(vals,ncol=5,byrow=TRUE))
+```
+
+## Term by term arithmetic on matrices
+
+```{r}
+id<-diag(rep(1,4))
+alt<-diag((-1)^(1:4))
+same<-matrix(rep(2,16),nrow=4)
+id+ones
+3*id*same
+(ct<-matrix(1:24,nrow=4))
+ct*2
+1/ct
+ct^2
+```
+## Matrix algebra
+
+```{r}
+t(ct)
+alt
+alt%*%ct
+(mat<-matrix(c(1,1,2,3),ncol=2))
+(mat.inv<-solve(mat))
+mat%*%mat.inv
+
+
+```
+## Indexing
+
+```{r}
+ct
+ct[1:3,]
+ct[1:3,1:4]
+ct[,4]
+```
+
+

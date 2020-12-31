@@ -1,0 +1,55 @@
+---
+title: "Normal Distributions"
+author: "C. Durso"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Visualizing Normal distributions
+
+Vary the mean.
+
+```{r}
+
+theoretical.0.1<-data.frame(value=c(-5,5))
+                            
+g<- ggplot(theoretical.0.1, aes(x=value)) +
+        stat_function(fun = dnorm,args = list(mean =0, sd = 1))+
+        stat_function(fun = dnorm, colour = "orange",args = list(mean =1, sd = 1))+
+        stat_function(fun = dnorm, colour = "darkgreen",args = list(mean =2, sd = 1))
+g
+
+```
+
+Vary the sd.
+
+```{r}
+g<- ggplot(theoretical.0.1, aes(x=value)) +
+        stat_function(fun = dnorm,args = list(mean =0, sd = 1))+
+        stat_function(fun = dnorm, colour = "orange",args = list(mean =0, sd = .5))+
+        stat_function(fun = dnorm, colour = "darkgreen",args = list(mean =0, sd = 2))
+g
+
+```
+
+Or both.
+
+```{r}
+g<- g+
+        stat_function(fun = dnorm,args = list(mean =1, sd = 1),linetype="dashed")+
+        stat_function(fun = dnorm, colour = "orange",args = list(mean =1, sd = .5),
+                      linetype="dashed")+
+        stat_function(fun = dnorm, colour = "darkgreen",args = list(mean =1, sd = 2),
+                      linetype="dashed")
+g
+
+```
+
+

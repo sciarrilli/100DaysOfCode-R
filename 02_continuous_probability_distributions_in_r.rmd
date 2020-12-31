@@ -1,0 +1,67 @@
+---
+title: "Continuous Probability Distributions"
+author: "C. Durso"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+
+## Continuous Distributions
+
+The d-, p-, and r-prefixes operate to give density, cumulative density, and random samples. 
+
+```{r}
+
+theoretical.0.1<-data.frame(value=seq(-5,5,length.out = 100),
+                            f=dnorm(seq(-5,5,length.out = 100)))
+qplot(data=theoretical.0.1,value,f)
+g<- ggplot(theoretical.0.1, aes(x=value)) +
+        #geom_histogram(aes(y = ..density..),binwidth=1) +
+        stat_function(fun = dnorm, colour = "orange",args = list(mean =0, sd = 1))+
+        stat_function(fun = pnorm, colour = "darkgreen",args = list(mean =0, sd = 1))
+g
+```
+
+```{r}
+set.seed(98765432)
+value<-rnorm(10000)
+f<-dnorm(value)
+dat<-data.frame(value,f)
+g<- ggplot(dat, aes(x=value,y=f)) +
+        geom_histogram(aes(y = ..density..)) +
+        geom_line(color="red")
+g
+```
+
+```{r}
+ 
+set.seed(98765432)                     
+dat<-data.frame(value=rnorm(100000,mean=10,sd=5))
+g<- ggplot(dat, aes(x=value)) +
+        geom_histogram(aes(y = ..density..),binwidth=1) +
+        stat_function(fun = dnorm, colour = "red",args = list(mean =10, sd = 5))
+g
+```
+
+```{r}
+x<-seq(-10,30,by=1)
+theoretical<-data.frame(x=x,y=dnorm(x,10,5))
+g<-g+geom_point(data=theoretical,aes(x=x,y=y))
+g
+```
+
+
+The q-prefix gives the inverse function of the cumulative density.
+
+```{r}
+qnorm(.7)
+pnorm(qnorm(.7))
+```
+
